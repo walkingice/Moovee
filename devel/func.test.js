@@ -252,12 +252,7 @@ function refreshDragBox(data)
 		if(isIProduct() != "iPad") showETitle = false;
 	}
 
-	if(data[0].LINK) {
-		$("#dragBox").html("<div id=\"infoBox\"><img id=\"imdbBtn\" src=\"../icon/walla.png\" alt=\"Lookup this movie in Wallagroup\" onclick=\"imdbWindow($(this).parent());\" /></div>");
-	} else {
-		$("#dragBox").html("<div id=\"infoBox\"><img id=\"imdbBtn\" src=\"../icon/IMDb.png\" alt=\"Lookup this movie in IMDb\" onclick=\"imdbWindow($(this).parent());\" /></div>");
-	}
-
+	$("#dragBox").html("<div id=\"infoBox\"><img id=\"imdbBtn\" src=\"../icon/walla.png\" alt=\"Lookup this movie in Wallagroup\" onclick=\"imdbWindow($(this).parent());\" /></div>");
 	$("#dragBox > #infoBox").append("<h1 class=\"movTitle\">" + data[0].CTITLE + "</h1>");
 
 	if(data[0].GRADE) $("#infoBox > h1").append(" (" + data[0].GRADE + ")");
@@ -467,7 +462,7 @@ function msgBox(msgType, msg, callback, callback2)
 		buttonParm = {
 			"確定": function() {$(this).dialog('close'); $(this).remove(); callback();},
 			"取消": function() {$(this).dialog('close'); $(this).remove();},
-			"連結": function() {$(this).dialog('close'); $(this).remove(); callback2();}
+			"網頁": function() {$(this).dialog('close'); $(this).remove(); callback2();}
 		};
 		break;
 	case "collision":
@@ -513,11 +508,11 @@ function imdbWindow(movTitleObj)
 		movOpt += "</ul>";
 		msgBox("plain", "<strong>Which movie?</strong>" + movOpt);
 		$("#movOpt > li").on("click", function() {
-			void(window.open("http://www.imdb.com/find?s=all&q=" + escape($(this).text()), "imdbWindow"));
+			void(window.open("http://www.wallagroup.com/search/?q=" + escape($(this).text()), "imdbWindow"));
 			return false;
 		});
 	}
-	else void(window.open("http://www.imdb.com/find?s=all&q=" + escape(eTitle[0]), "imdbWindow"));
+	else void(window.open("http://www.wallagroup.com/search/?q=" + escape(eTitle[0]), "imdbWindow"));
 }
 
 function trim(s) {
