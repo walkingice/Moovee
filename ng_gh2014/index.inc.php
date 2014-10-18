@@ -5,6 +5,7 @@
 <meta name="description" content="<?php echo $description;?>" />
 <meta name="keywords" content="<?php echo $keywords;?>" />
 <?php include("../includes/header.test.inc.php"); ?>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
 </head>
 <body onload="render();">
 <div class="navbar navbar-inverse navbar-fixed-top">
