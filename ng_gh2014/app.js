@@ -7,7 +7,6 @@
         promise.success(function (data, status) {
             $rs.loading = false;
             $rs.movieData = data;
-            debugger;
         });
 
         promise.error(function (data, status) {

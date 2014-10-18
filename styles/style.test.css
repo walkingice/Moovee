@@ -157,3 +157,13 @@ border-radius:10px;
 -webkit-border-radius:10px;
 }
 
+.block-bordered {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.fixed-height {
+	height: 600px;
+	overflow:auto;
+	overflow-x:hidden;
+}

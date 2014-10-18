@@ -17,40 +17,54 @@
     </div>
 </div>
 
-<div class="container-fluid">
-    <div id="breadcrumb" class="well well-small dropdown">
-        <div class="btn-group">
-            <span class="btn btn-primary">排序方法</span><span id="bCat-dropdown" class="dropdown-toggle btn btn-primary" data-toggle="dropdown"><b class="caret"></b></span>
-            <ul id="tabs" class="dropdown-menu" role="menu" aria-labelledby="bCat-dropdown">
-                <li role="menuitem"><a class="tab" href="#CATEGORY">影展分類</a></li>
-                <li role="menuitem"><a class="tab" href="#DATE">播映日期</a></li>
-                <li role="menuitem"><a class="tab" href="#PLACE">播映影廳</a></li>
-                <li role="menuitem"><a class="tab" href="#GRADE">電影分級</a></li>
-                <li role="menuitem"><a class="tab" href="#REMARK">場次備註</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-
 <div class="container-fluid" ng-controller="ItemsCtrl">
     <div class="row-fluid">
-        <div id="lPanel" class="span5 well">
-            <table class="table">
-                <tr ng-repeat="item in items">
-                    <td>{{item.CTITLE}}</td>
-                    <td>{{item.PLACE}}</td>
-                    <td>{{item.REMARK}}</td>
-                    <td>{{item.GRADE}}</td>
-                </tr>
-            </table>
-            <div id="remarkDesc"><?php echo $remarkDesc;?></div>
+        <div class="span6">
+            <div>
+                排序方法
+            </div>
+            <div class="fixed-height">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td>片名</td>
+                            <td>分類</td>
+                            <td>地點</td>
+                            <td>時間</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in items">
+                            <td>{{item.CTITLE}}</td>
+                            <td>{{item.CATEGORY}}</td>
+                            <td>{{item.PLACE}}</td>
+                            <td>{{item.START_DATETIME | date:'M/dd H:mm'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="remarkDesc"></div>
         </div>
-        <div id="dropBox" class="span7 well well-small"></div>
+        <div class="span6 block-bordered fixed-height"></div>
         <!--<div id="calendar" class="span5 well well-small" style="height: 600px;"></div>-->
     </div>
+</div>
+<div class="container-fluid">
+    <div class="">
+        <dl class="dl-horizontal">
+            <dt>★ </dt><dd>影人出席，詳情請見網站及現場公告</dd>
+            <dt>▲</dt><dd>影片非英語發音且無英文字幕</dd>
+            <dt>◎ </dt><dd>非售票之活動場次；入場方式請見活動頁</dd>
+            <dt></dt><dd>(跨日場次將以大於 24 小時方式表示)</dd>
+        </dl>
+    </div>
+</div>
 
+<div class="container-fluid">
     <?php include("footer.inc.php");?>
 </div>
+
+
 <div id="varStor" class="hidden"><?php if(strlen($movs) > 0) echo $movs;?></div>
 <div id="filter" class="hidden"></div>
 </body>
