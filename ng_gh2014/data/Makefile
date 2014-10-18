@@ -3,7 +3,10 @@ group_DATE.json group_GRADE.json group_PLACE.json group_REMARK.json \
 movies.json
 
 .PHONY: all
-all: gh2014.txt $(JSONFILES)
+all: gh2014.json gh2014.txt $(JSONFILES)
+
+gh2014.json: gh2014.txt
+	python moovee_parser.py $< > $@
 
 gh2014.txt:
 	python moovee_scrap.py > $@
@@ -14,3 +17,4 @@ $(JSONFILES): gh2014.txt
 .PHONY: clean
 clean:
 	rm -f $(JSONFILES)
+
