@@ -48,7 +48,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in items | orderBy:predicate | filter: filterStr" ng-click="addMovie(item)">
-                            <td>{{item.CTITLE}}</td>
+                            <td>{{item.CTITLE}}<span class="pull-right" ng-if="item.REMARK">({{item.REMARK}})</span></td>
                             <td>{{item.CATEGORY}}</td>
                             <td>{{item.PLACE}}</td>
                             <td>{{item.START_DATETIME | date:'M/dd H:mm'}}</td>
