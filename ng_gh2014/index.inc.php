@@ -47,7 +47,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in items | orderBy:predicate | filter: filterStr">
+                        <tr ng-repeat="item in items | orderBy:predicate | filter: filterStr" ng-click="addMovie(item)">
                             <td>{{item.CTITLE}}</td>
                             <td>{{item.CATEGORY}}</td>
                             <td>{{item.PLACE}}</td>
@@ -56,9 +56,22 @@
                     </tbody>
                 </table>
             </div>
-            <div id="remarkDesc"></div>
         </div>
-        <div class="span6 block-bordered fixed-height"></div>
+        <div class="span6 block-bordered fixed-height">
+            <div>
+                <table class="table table-bordered table-hover">
+                    <tbody>
+                        <tr ng-repeat="item in chosen | orderBy: 'START_DATETIME'" ng-click="rmMovie(item)">
+                            <td>{{item.CTITLE}}</td>
+                            <td>{{item.CATEGORY}}</td>
+                            <td>{{item.PLACE}}</td>
+                            <td>{{item.START_DATETIME | date:'M/dd H:mm'}}</td>
+                            <td>{{item.END_DATETIME | date:'M/dd H:mm'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <!--<div id="calendar" class="span5 well well-small" style="height: 600px;"></div>-->
     </div>
 </div>

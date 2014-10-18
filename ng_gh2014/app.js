@@ -56,5 +56,27 @@
         });
 
         $scope.predicate = '';
+
+        $scope.addMovie = function (item) {
+            var added = false;
+            angular.forEach($scope.chosen, function (v, k) {
+                if (v == item) {
+                    added = true;
+                }
+            });
+            if (added) {
+                alert('Already added this movie');
+            } else {
+                $scope.chosen.push(item);
+            }
+        };
+
+        $scope.rmMovie = function (item) {
+            if(confirm(item.CTITLE + ', remove this movie?')) {
+                $scope.chosen.splice($scope.chosen.indexOf(item), 1);
+            }
+        };
+
+        $scope.chosen = [];
     }]);
 })(window, angular);
