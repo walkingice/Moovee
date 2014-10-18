@@ -57,11 +57,14 @@
                 </table>
             </div>
         </div>
-        <div class="span6 block-bordered fixed-height">
+        <div class="span6 fixed-height">
+            <div>
+                <h2>已選電影</h2>
+            </div>
             <div>
                 <table class="table table-bordered table-hover">
                     <tbody>
-                        <tr ng-repeat="item in chosen | orderBy: 'START_DATETIME'" ng-click="rmMovie(item)">
+                        <tr ng-repeat="item in chosen" ng-click="rmMovie(item)" ng-class="{error: item.conflict}">
                             <td>{{item.CTITLE}}</td>
                             <td>{{item.CATEGORY}}</td>
                             <td>{{item.PLACE}}</td>

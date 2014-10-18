@@ -68,15 +68,45 @@
                 alert('Already added this movie');
             } else {
                 $scope.chosen.push(item);
+                organizeChosen($scope.chosen);
             }
         };
 
         $scope.rmMovie = function (item) {
             if(confirm(item.CTITLE + ', remove this movie?')) {
                 $scope.chosen.splice($scope.chosen.indexOf(item), 1);
+                item.conflict = false;
+                organizeChosen($scope.chosen);
             }
         };
 
         $scope.chosen = [];
+
+        function sortFunction(a, b) {
+            return a.START_DATETIME > b.START_DATETIME;
+        }
+
+        function timeConflict(a, b) {
+            if (!a || !b) {
+                return;
+            }
+            var startA = (new Date(a.START_DATETIME)).getTime(),
+                startB = (new Date(b.START_DATETIME)).getTime(),
+                endA = (new Date(a.END_DATETIME)).getTime(),
+                endB = (new Date(b.END_DATETIME)).getTime();
+            return ((startA <= startB) && (startB <= endA))
+                || ((startA <= endB) && (endB <= endA))
+                || ((startB <= startA) && (startA <= endB))
+                || ((startB <= endA) && (endA <= endB));
+        }
+        function organizeChosen(array) {
+            var i, prev, next;
+            array.sort(sortFunction);
+            for (i = 0; i < array.length; i = i + 1) {
+                prev = array[i - 1];
+                next = array[i + 1];
+                array[i].conflict = timeConflict(array[i], prev) || timeConflict(array[i], next);
+            }
+        }
     }]);
 })(window, angular);
