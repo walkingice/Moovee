@@ -50,6 +50,7 @@ else
     <h1>Which film festival?</h1>
     <div id="festList">
         <ul>
+            <li><a href="ng_gh2014/">2014 金馬影展 / Golden Horse 2014 - 新介面</a></li>
             <li><a href="gh2014/">2014 金馬影展 / Golden Horse 2014</a></li>
             <li><a href="gh2013/">2013 金馬影展 / Golden Horse 2013</a></li>
             <li><a href="gh2013f/">2013 金馬奇幻影展 / 2013 Golden Horse Fantastic Film Festival</a></li>
