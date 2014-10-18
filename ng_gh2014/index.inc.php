@@ -21,7 +21,20 @@
     <div class="row-fluid">
         <div class="span6">
             <div>
-                排序方法
+                排序清單
+                <select ng-model="predicate">
+                    <option value="">無</option>
+                    <option value="CATEGORY">依照 分類</option>
+                    <option value="PLACE">依照 地點</option>
+                    <option value="START_DATETIME">依照 時間</option>
+                </select>
+            </div>
+            <div>
+                過濾清單
+                <select ng-model="filterStr">
+                    <option value="{{f}}" ng-repeat="f in filterOpts">{{f}}</option>
+                </select>
+                <button class="btn" ng-disabled="!filterStr" ng-click="filterStr=''">不過濾</button>
             </div>
             <div class="fixed-height">
                 <table class="table table-bordered table-hover">
@@ -34,7 +47,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in items">
+                        <tr ng-repeat="item in items | orderBy:predicate | filter: filterStr">
                             <td>{{item.CTITLE}}</td>
                             <td>{{item.CATEGORY}}</td>
                             <td>{{item.PLACE}}</td>

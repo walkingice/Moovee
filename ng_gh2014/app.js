@@ -20,6 +20,41 @@
                 return;
             }
             $scope.items = nV.items;
+
+            $scope.filterOpts = [];
+
+            /* we want to filter by category */
+            var keys = {}
+            angular.forEach($scope.items, function (v, k) {
+                keys[v.CATEGORY] = true;
+            });
+            angular.forEach(keys, function (v, k) {
+                $scope.filterOpts.push(k);
+            });
+
+             /* we want to filter by date */
+            keys = {}
+            angular.forEach($scope.items, function (v, k) {
+                keys[v.DATE] = true;
+            });
+            angular.forEach(keys, function (v, k) {
+                $scope.filterOpts.push(k);
+            });
+
+             /* we want to filter by location */
+            var pattern = /(.+?)[\d\b]/;
+            keys = {}
+            angular.forEach($scope.items, function (v, k) {
+                var match = v.PLACE.match(pattern);
+                if (match.length > 1) {
+                    keys[match[1]] = 'place';
+                }
+            });
+            angular.forEach(keys, function (v, k) {
+                $scope.filterOpts.push(k);
+            });
         });
+
+        $scope.predicate = '';
     }]);
 })(window, angular);
