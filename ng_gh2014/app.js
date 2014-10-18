@@ -14,7 +14,7 @@
         });
     }]);
 
-    app.controller('ItemsCtrl', ['$rootScope', '$scope', '$window', function ($rootScope, $scope, $window) {
+    app.controller('ItemsCtrl', ['$rootScope', '$scope', '$window', '$location', function ($rootScope, $scope, $window, $location) {
         $scope.$watch('movieData', function (nV) {
             if (!nV) {
                 return;
@@ -53,6 +53,8 @@
             angular.forEach(keys, function (v, k) {
                 $scope.filterOpts.push(k);
             });
+
+            retrieveAdded();
         });
 
         $scope.predicate = '';
@@ -86,6 +88,14 @@
 
         $scope.chosen = [];
 
+        $scope.link = function () {
+            return $location.absUrl();
+        };
+
+        $scope.share = function () {
+            $scope.showLink = !$scope.showLink;
+        };
+
         function sortFunction(a, b) {
             return a.START_DATETIME > b.START_DATETIME;
         }
@@ -103,13 +113,38 @@
                 || ((startB <= startA) && (startA <= endB))
                 || ((startB <= endA) && (endA <= endB));
         }
+
+        function retrieveAdded () {
+            var list, param = $location.search();
+            if (!param || !param.movs) {
+                // no query string for movs, return
+                return;
+            }
+            list = param.movs.split(',');
+            try {
+                angular.forEach(list, function (idx) {
+                    $scope.chosen.push($scope.items[idx]);
+                });
+                organizeChosen($scope.chosen);
+            } catch (e) {
+                console.log('exception occurs when parsing query string');
+            }
+        }
+
         function organizeChosen(array) {
-            var i, prev, next;
+            var i, prev, next, idx;
             array.sort(sortFunction);
             for (i = 0; i < array.length; i = i + 1) {
                 prev = array[i - 1];
                 next = array[i + 1];
                 array[i].conflict = timeConflict(array[i], prev) || timeConflict(array[i], next);
+            }
+            if (array.length > 0) {
+                idx = []
+                angular.forEach(array, function (item) {
+                    idx.push($scope.items.indexOf(item));
+                });
+                $location.search('movs', idx.join(','));
             }
         }
     }]);

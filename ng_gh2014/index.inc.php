@@ -67,6 +67,8 @@
             <div>
                 <h2>我的片單</h2> 已選 {{chosen.length}} 部
                 <button class="btn btn-link no-print" ng-disabled="chosen.length <= 0" ng-click="print()">列印</button>
+                <button class="btn btn-link no-print" ng-disabled="chosen.length <= 0" ng-click="share()">分享</button>
+                <div ng-if="showLink" class="no-print">我的片單連結 <input value="{{link()}}"></div>
             </div>
             <div class="fixed-height">
                 <table class="table table-bordered table-hover">
