@@ -61,3 +61,13 @@ position:absolute;
 bottom:0;
 right:0;
 }
+
+.no-print {
+	display: none !important;
+}
+
+table tr {
+	background-color: #EEE;
+	padding: 20px;
+	border:1px solid #666;
+}

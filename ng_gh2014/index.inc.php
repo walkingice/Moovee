@@ -19,7 +19,7 @@
 
 <div class="container-fluid" ng-controller="ItemsCtrl">
     <div class="row-fluid">
-        <div class="span6">
+        <div class="span6 no-print">
             <div>
                 排序清單
                 <select ng-model="predicate">
@@ -66,6 +66,7 @@
         <div class="span6">
             <div>
                 <h2>我的片單</h2> 已選 {{chosen.length}} 部
+                <button class="btn btn-link no-print" ng-disabled="chosen.length <= 0" ng-click="print()">列印</button>
             </div>
             <div class="fixed-height">
                 <table class="table table-bordered table-hover">
@@ -74,7 +75,7 @@
                             <td>
                                 <h3>{{item.CTITLE}}</h3>
                                 <h5>{{item.ETITLE}}</h5>
-                                <a ng-click="$event.stopPropagation()" ng-href="http://www.wallagroup.com/search/?q={{item.ETITLE}}" target="_blank" title="在 Wallagroup 上面尋找">
+                                <a class="no-print" ng-click="$event.stopPropagation()" ng-href="http://www.wallagroup.com/search/?q={{item.ETITLE}}" target="_blank" title="在 Wallagroup 上面尋找">
                                     <img src="../icon/walla.png" alt="在 Wallagroup 上面尋找">
                                 </a>
 
@@ -88,7 +89,7 @@
                             </td>
                             <td>
                                 <div style="min-height:40px;">
-                                    <button class="btn btn-mini pull-right" type="button" ng-click="rmMovie(item)">刪除</button>
+                                    <button class="btn btn-mini pull-right no-print" type="button" ng-click="rmMovie(item)">刪除</button>
                                 </div>
                                 <p>{{item.PLACE}}</p>
                                 <p>

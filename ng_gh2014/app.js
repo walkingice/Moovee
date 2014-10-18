@@ -14,7 +14,7 @@
         });
     }]);
 
-    app.controller('ItemsCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+    app.controller('ItemsCtrl', ['$rootScope', '$scope', '$window', function ($rootScope, $scope, $window) {
         $scope.$watch('movieData', function (nV) {
             if (!nV) {
                 return;
@@ -78,6 +78,10 @@
                 item.conflict = false;
                 organizeChosen($scope.chosen);
             }
+        };
+
+        $scope.print = function () {
+            $window.print();
         };
 
         $scope.chosen = [];
