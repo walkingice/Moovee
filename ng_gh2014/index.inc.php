@@ -48,7 +48,13 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in items | orderBy:predicate | filter: filterStr" ng-click="addMovie(item)">
-                            <td>{{item.CTITLE}}<span class="pull-right" ng-if="item.REMARK">({{item.REMARK}})</span></td>
+                            <td>
+                                <a ng-click="$event.stopPropagation()" ng-href="http://www.wallagroup.com/search/?q={{item.ETITLE}}" target="_blank" title="在 Wallagroup 上面尋找">
+                                    <img src="../icon/walla.png" alt="在 Wallagroup 上面尋找">
+                                </a>
+                                {{item.CTITLE}}
+                                <span class="pull-right" ng-if="item.REMARK">({{item.REMARK}})</span>
+                            </td>
                             <td>{{item.CATEGORY}}</td>
                             <td>{{item.PLACE}}</td>
                             <td>{{item.START_DATETIME | date:'M/dd H:mm'}}</td>
@@ -57,19 +63,43 @@
                 </table>
             </div>
         </div>
-        <div class="span6 fixed-height">
+        <div class="span6">
             <div>
-                <h2>已選電影</h2>
+                <h2>我的片單</h2> 已選 {{chosen.length}} 部
             </div>
-            <div>
+            <div class="fixed-height">
                 <table class="table table-bordered table-hover">
                     <tbody>
-                        <tr ng-repeat="item in chosen" ng-click="rmMovie(item)" ng-class="{error: item.conflict}">
-                            <td>{{item.CTITLE}}</td>
-                            <td>{{item.CATEGORY}}</td>
-                            <td>{{item.PLACE}}</td>
-                            <td>{{item.START_DATETIME | date:'M/dd H:mm'}}</td>
-                            <td>{{item.END_DATETIME | date:'M/dd H:mm'}}</td>
+                        <tr ng-repeat="item in chosen" ng-class="{error: item.conflict}">
+                            <td>
+                                <h3>{{item.CTITLE}}</h3>
+                                <h5>{{item.ETITLE}}</h5>
+                                <a ng-click="$event.stopPropagation()" ng-href="http://www.wallagroup.com/search/?q={{item.ETITLE}}" target="_blank" title="在 Wallagroup 上面尋找">
+                                    <img src="../icon/walla.png" alt="在 Wallagroup 上面尋找">
+                                </a>
+
+                                <p class="text-info">片長：{{item.DURATION}} 分鐘</p>
+                                <span class="pull-right h-gutter badge badge-success" title="手冊第 {{item.PAGE}} 頁">p.{{item.PAGE}}</span>
+                                <span class="pull-right h-gutter label">{{item.CATEGORY}}</span>
+                                <span class="pull-right h-gutter badge" title="分級" ng-if="item.GRADE">{{item.GRADE}}</span>
+                                <span class="pull-right h-gutter" ng-if="item.REMARK">{{item.REMARK}}</span>
+                                <div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="min-height:40px;">
+                                    <button class="btn btn-mini pull-right" type="button" ng-click="rmMovie(item)">刪除</button>
+                                </div>
+                                <p>{{item.PLACE}}</p>
+                                <p>
+                                    {{item.START_DATETIME | date:'M/dd (EEE)'}}
+                                </p>
+                                <p>
+                                    <span>{{item.START_DATETIME | date:'H:mm'}}</span>
+                                    -
+                                    <span>{{item.END_DATETIME | date:'H:mm'}}</span>
+                                </p>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

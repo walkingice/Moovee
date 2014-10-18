@@ -167,3 +167,8 @@ border-radius:10px;
 	overflow:auto;
 	overflow-x:hidden;
 }
+
+.h-gutter {
+	margin-left: 2px;
+	margin-right: 2px;
+}
