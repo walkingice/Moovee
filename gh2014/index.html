@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Moovee -- 2014 Golden Horse Film Festival</title>
+<meta name="description" content="很陽春的排片單系統" />
+<meta name="keywords" content="排片單, 2014, 金馬, 金馬影展, Golden Horse 2014" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<!-- iPhone test -->
+<link rel="apple-touch-icon" href="../icon/moovee.png" />
+<meta name="viewport" content = "width = device-width, initial-scale = 1, user-scalable = no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../styles/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../styles/print.css" type="text/css" media="print" />
+<!-- Oh, yes, please render it using chrome frame, or your almost-standard engine -->
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<![endif]-->
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+</head>
+<body ng-app="mooveeApp">
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href=".">Moovee -- 2014 Golden Horse Film Festival</a>
+            <p id="extlinks" class="navbar-text pull-right"><a class="navbar-link" href="http://playpcesor.blogspot.com/2009/10/moovee-2009.html" title="使用說明 by 電腦玩物">使用說明</a> |
+             <a class="navbar-link" href="http://www.goldenhorse.org.tw/">2014 台北金馬影展官方網站</a> |
+             <a class="navbar-link" href="http://www.goldenhorse.org.tw/ui/index.php?class=funcnav&func=news&work=detail&subwork=&news_id=465&lang=ch&switch_lang=1">影展手冊 PDF</a></p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" ng-controller="ItemsCtrl">
+    <div class="row-fluid">
+        <div class="span6 no-print">
+            <div>
+                排序清單
+                <select ng-model="predicate">
+                    <option value="">無</option>
+                    <option value="CATEGORY">依照 分類</option>
+                    <option value="PLACE">依照 地點</option>
+                    <option value="START_DATETIME">依照 時間</option>
+                </select>
+            </div>
+            <div>
+                過濾清單
+                <select ng-model="filterStr">
+                    <option value="{{f}}" ng-repeat="f in filterOpts">{{f}}</option>
+                </select>
+                <button class="btn" ng-disabled="!filterStr" ng-click="filterStr=''">不過濾</button>
+            </div>
+            <div class="fixed-height">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td>片名</td>
+                            <td>分類</td>
+                            <td>地點</td>
+                            <td>時間</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in items | orderBy:predicate | filter: filterStr" ng-click="addMovie(item)">
+                            <td>
+                                <a ng-click="$event.stopPropagation()" ng-href="http://www.wallagroup.com/search/?q={{item.ETITLE}}" target="_blank" title="在 Wallagroup 上面尋找">
+                                    <img src="../icon/walla.png" alt="在 Wallagroup 上面尋找">
+                                </a>
+                                {{item.CTITLE}}
+                                <span class="pull-right" ng-if="item.REMARK">({{item.REMARK}})</span>
+                            </td>
+                            <td>{{item.CATEGORY}}</td>
+                            <td>{{item.PLACE}}</td>
+                            <td>{{item.START_DATETIME | date:'M/dd H:mm'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="span6">
+            <div>
+                <h2>我的片單</h2> 已選 {{chosen.length}} 部
+                <button class="btn btn-link no-print" ng-disabled="chosen.length <= 0" ng-click="print()">列印</button>
+                <button class="btn btn-link no-print" ng-disabled="chosen.length <= 0" ng-click="share()">分享</button>
+                <div ng-if="showLink" class="no-print">我的片單連結 <input value="{{link()}}"></div>
+            </div>
+            <div class="fixed-height">
+                <table class="table table-bordered table-hover">
+                    <tbody>
+                        <tr ng-repeat="item in chosen" ng-class="{error: item.conflict}">
+                            <td>
+                                <h3>{{item.CTITLE}}</h3>
+                                <h5>{{item.ETITLE}}</h5>
+                                <a class="no-print" ng-click="$event.stopPropagation()" ng-href="http://www.wallagroup.com/search/?q={{item.ETITLE}}" target="_blank" title="在 Wallagroup 上面尋找">
+                                    <img src="../icon/walla.png" alt="在 Wallagroup 上面尋找">
+                                </a>
+
+                                <p class="text-info">片長：{{item.DURATION}} 分鐘</p>
+                                <span class="pull-right h-gutter badge badge-success" title="手冊第 {{item.PAGE}} 頁">p.{{item.PAGE}}</span>
+                                <span class="pull-right h-gutter label">{{item.CATEGORY}}</span>
+                                <span class="pull-right h-gutter badge" title="分級" ng-if="item.GRADE">{{item.GRADE}}</span>
+                                <span class="pull-right h-gutter" ng-if="item.REMARK">{{item.REMARK}}</span>
+                                <div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="min-height:40px;">
+                                    <button class="btn btn-mini pull-right no-print" type="button" ng-click="rmMovie(item)">刪除</button>
+                                </div>
+                                <p>{{item.PLACE}}</p>
+                                <p>
+                                    {{item.START_DATETIME | date:'M/dd (EEE)'}}
+                                </p>
+                                <p>
+                                    <span>{{item.START_DATETIME | date:'H:mm'}}</span>
+                                    -
+                                    <span>{{item.END_DATETIME | date:'H:mm'}}</span>
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--<div id="calendar" class="span5 well well-small" style="height: 600px;"></div>-->
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="">
+        <dl class="dl-horizontal">
+            <dt>★ </dt><dd>影人出席，詳情請見網站及現場公告</dd>
+            <dt>▲</dt><dd>影片非英語發音且無英文字幕</dd>
+            <dt>◎ </dt><dd>非售票之活動場次；入場方式請見活動頁</dd>
+            <dt></dt><dd>(跨日場次將以大於 24 小時方式表示)</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div id="footer" class="row-fluid">
+    <div class="fb_like span1"><object data="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fcornguo.atcity.org%2Ftest%2Fmoovee%2F&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" style="border:none; overflow:hidden; height:21px;" type="text/html"></object></div>
+    <div class="span11">
+        節目資訊以節目手冊與台北電影節佈告為準，本頁面僅供輔助參考<br />
+        Created by <a href="http://about.me/cornguo">CornGuo</a> @ 20141015<a href="../changelog.txt" title="changelog">,</a>
+        原本以為已經沒人用了，結果有影友提醒我要更新 XD
+        (# 8)
+    </div>
+</div>
+</div>
+
+
+<div id="varStor" class="hidden"></div>
+<div id="filter" class="hidden"></div>
+</body>
+<script src="app.js"></script>
+</html>
