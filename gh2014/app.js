@@ -139,13 +139,11 @@
                 next = array[i + 1];
                 array[i].conflict = timeConflict(array[i], prev) || timeConflict(array[i], next);
             }
-            if (array.length > 0) {
-                idx = []
-                angular.forEach(array, function (item) {
-                    idx.push($scope.items.indexOf(item));
-                });
-                $location.search('movs', idx.join(','));
-            }
+            idx = []
+            angular.forEach(array, function (item) {
+                idx.push($scope.items.indexOf(item));
+            });
+            $location.search('movs', idx.join(','));
         }
     }]);
 })(window, angular);
