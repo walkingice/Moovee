@@ -171,3 +171,14 @@ border-radius:10px;
 	margin-left: 2px;
 	margin-right: 2px;
 }
+
+.itemOdd {
+	/*background-color: #EEE;*/
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.itemEven {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}

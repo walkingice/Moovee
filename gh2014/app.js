@@ -20,6 +20,7 @@
                 return;
             }
             $scope.items = nV.items;
+            $scope.groups = createGroups($scope.items);
 
             $scope.filterOpts = [];
 
@@ -70,6 +71,7 @@
                 alert('Already added this movie');
             } else {
                 $scope.chosen.push(item);
+                item.chosen = true;
                 organizeChosen($scope.chosen);
             }
         };
@@ -78,6 +80,7 @@
             if(confirm(item.CTITLE + ', remove this movie?')) {
                 $scope.chosen.splice($scope.chosen.indexOf(item), 1);
                 item.conflict = false;
+                item.chosen = false;
                 organizeChosen($scope.chosen);
             }
         };
@@ -95,6 +98,25 @@
         $scope.share = function () {
             $scope.showLink = !$scope.showLink;
         };
+
+        function createGroups (items) {
+            var groups = {};
+            angular.forEach(items, function (item) {
+                var key = item.CTITLE;
+                if (!groups[key]) {
+                    groups[key] = {
+                        CTITLE: item.CTITLE,
+                        ETITLE: item.ETITLE,
+                        CATEGORY: item.CATEGORY,
+                        items: []
+                    };
+                }
+                groups[key].items.push(item);
+            });
+
+            // return array so ng-repeat is able to do sorting and filtering.
+            return Object.keys(groups).map(function(k){return groups[k]});
+        }
 
         function sortFunction(a, b) {
             var startA = (new Date(a.START_DATETIME)).getTime(),
@@ -125,6 +147,7 @@
             list = param.movs.split(',');
             try {
                 angular.forEach(list, function (idx) {
+                    $scope.items[idx].chosen = true;
                     $scope.chosen.push($scope.items[idx]);
                 });
                 organizeChosen($scope.chosen);
