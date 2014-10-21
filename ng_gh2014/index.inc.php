@@ -11,8 +11,10 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <a class="brand" href="."><?php echo $title;?></a>
-            <p id="extlinks" class="navbar-text pull-right"><?php echo $extlinks;?></p>
+            <a class="brand" href=".">Moovee -- 2014 Golden Horse Film Festival</a>
+            <p id="extlinks" class="navbar-text pull-right"><a class="navbar-link" href="http://playpcesor.blogspot.com/2009/10/moovee-2009.html" title="使用說明 by 電腦玩物">使用說明</a> |
+             <a class="navbar-link" href="http://www.goldenhorse.org.tw/">2014 台北金馬影展官方網站</a> |
+             <a class="navbar-link" href="http://www.goldenhorse.org.tw/ui/index.php?class=funcnav&func=news&work=detail&subwork=&news_id=465&lang=ch&switch_lang=1">影展手冊 PDF</a></p>
         </div>
     </div>
 </div>
@@ -25,8 +27,6 @@
                 <select ng-model="predicate">
                     <option value="">無</option>
                     <option value="CATEGORY">依照 分類</option>
-                    <option value="PLACE">依照 地點</option>
-                    <option value="START_DATETIME">依照 時間</option>
                 </select>
             </div>
             <div>
@@ -37,27 +37,32 @@
                 <button class="btn" ng-disabled="!filterStr" ng-click="filterStr=''">不過濾</button>
             </div>
             <div class="fixed-height">
-                <table class="table table-bordered table-hover">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <td>片名</td>
-                            <td>分類</td>
-                            <td>地點</td>
-                            <td>時間</td>
+                            <td>場次</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in items | orderBy:predicate | filter: filterStr" ng-click="addMovie(item)">
+                        <tr ng-repeat="group in groups | orderBy:predicate | filter: filterStr">
                             <td>
-                                <a ng-click="$event.stopPropagation()" ng-href="http://www.wallagroup.com/search/?q={{item.ETITLE}}" target="_blank" title="在 Wallagroup 上面尋找">
-                                    <img src="../icon/walla.png" alt="在 Wallagroup 上面尋找">
-                                </a>
-                                {{item.CTITLE}}
-                                <span class="pull-right" ng-if="item.REMARK">({{item.REMARK}})</span>
+                                <div>
+                                    <h4>{{group.CTITLE}}</h4>
+                                    <a class="" ng-click="$event.stopPropagation()" ng-href="http://www.wallagroup.com/search/?q={{group.ETITLE}}" target="_blank" title="在 Wallagroup 上面尋找">
+                                        <img src="../icon/walla.png" alt="在 Wallagroup 上面尋找">
+                                    </a>
+                                </div>
+                                <span class="pull-right h-gutter label">{{group.CATEGORY}}</span>
                             </td>
-                            <td>{{item.CATEGORY}}</td>
-                            <td>{{item.PLACE}}</td>
-                            <td>{{item.START_DATETIME | date:'M/dd(EEE) H:mm'}}</td>
+                            <td style="min-width:330px;">
+                                <div ng-repeat="item in group.items"  ng-class-even="'itemEvent'" ng-class-odd="'itemOdd'">
+                                    <span class="pull-right" ng-if="group.REMARK">({{item.REMARK}})</span>
+                                    {{item.START_DATETIME | date:'M/dd(EEE) H:mm'}} - {{item.PLACE}}
+                                    <span class="label label-success" ng-if="item.chosen" ng-click="rmMovie(item)">已加入片單</span>
+                                    <button class="btn btn-small" ng-if="!item.chosen" ng-click="addMovie(item)">+</button>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -123,11 +128,19 @@
 </div>
 
 <div class="container-fluid">
-    <?php include("footer.inc.php");?>
+    <div id="footer" class="row-fluid">
+    <div class="fb_like span1"><object data="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fcornguo.atcity.org%2Ftest%2Fmoovee%2F&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" style="border:none; overflow:hidden; height:21px;" type="text/html"></object></div>
+    <div class="span11">
+        節目資訊以節目手冊與台北電影節佈告為準，本頁面僅供輔助參考<br />
+        Created by <a href="http://about.me/cornguo">CornGuo</a> @ 20141015<a href="../changelog.txt" title="changelog">,</a>
+        原本以為已經沒人用了，結果有影友提醒我要更新 XD
+        (# 8)
+    </div>
+</div>
 </div>
 
 
-<div id="varStor" class="hidden"><?php if(strlen($movs) > 0) echo $movs;?></div>
+<div id="varStor" class="hidden"></div>
 <div id="filter" class="hidden"></div>
 </body>
 <script src="app.js"></script>
