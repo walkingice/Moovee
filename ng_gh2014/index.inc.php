@@ -57,7 +57,7 @@
                             </td>
                             <td>{{item.CATEGORY}}</td>
                             <td>{{item.PLACE}}</td>
-                            <td>{{item.START_DATETIME | date:'M/dd H:mm'}}</td>
+                            <td>{{item.START_DATETIME | date:'M/dd(EEE) H:mm'}}</td>
                         </tr>
                     </tbody>
                 </table>
