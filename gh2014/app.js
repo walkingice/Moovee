@@ -97,7 +97,9 @@
         };
 
         function sortFunction(a, b) {
-            return a.START_DATETIME > b.START_DATETIME;
+            var startA = (new Date(a.START_DATETIME)).getTime(),
+                startB = (new Date(b.START_DATETIME)).getTime();
+            return startA - startB;
         }
 
         function timeConflict(a, b) {
