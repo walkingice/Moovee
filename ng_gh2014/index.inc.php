@@ -59,7 +59,8 @@
                                 <div ng-repeat="item in group.items"  ng-class-even="'itemEvent'" ng-class-odd="'itemOdd'">
                                     <span class="pull-right" ng-if="group.REMARK">({{item.REMARK}})</span>
                                     {{item.START_DATETIME | date:'M/dd(EEE) H:mm'}} - {{item.PLACE}}
-                                    <span class="label label-success" ng-if="item.chosen" ng-click="rmMovie(item)">已加入片單</span>
+                                    <span class="label label-success" ng-if="item.chosen && !item.conflict" ng-click="rmMovie(item)">已加入片單</span>
+                                    <span class="label label-important" ng-if="item.chosen && item.conflict" ng-click="rmMovie(item)">已加入片單(有時間衝突)</span>
                                     <button class="btn btn-small" ng-if="!item.chosen" ng-click="addMovie(item)">+</button>
                                 </div>
                             </td>
